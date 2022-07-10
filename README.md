@@ -1,8 +1,10 @@
 # ABCApi
 
 Sample api, example api for consuming carton status. 
-Currently there is 1 endpoint available. `api/Carton`.
+Currently there is 1 endpoint available. `api/Carton`. 
+
 You can post carton status to this endpoint. Please see the example payloads for example how to call (and not).
+
 `swagger.json` contains the swagger defenition for this api.
 
 ## Known limitations
