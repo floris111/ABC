@@ -1,0 +1,131 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ABC API",
+    "description": "An ASP.NET Core Web API for posting carton status, developed for ABC brand.",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Carton": {
+      "post": {
+        "tags": [
+          "Carton"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Carton"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If the posted carton has been accepted"
+          },
+          "400": {
+            "description": "If the posted carton has invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "required": [
+          "articleNumber",
+          "quantity"
+        ],
+        "type": "object",
+        "properties": {
+          "articleNumber": {
+            "maxLength": 32,
+            "type": "string",
+            "description": "Unique article number of product",
+            "example": "123456"
+          },
+          "quantity": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Amount contained in carton",
+            "format": "int32",
+            "example": 5
+          },
+          "isOk": {
+            "type": "boolean",
+            "description": "Does the carton contain the right amount for this product. True if it does. False if it does not."
+          }
+        },
+        "additionalProperties": false
+      },
+      "Carton": {
+        "required": [
+          "articles",
+          "barcode",
+          "isOk"
+        ],
+        "type": "object",
+        "properties": {
+          "isOk": {
+            "type": "boolean",
+            "description": "Does the carton contain the right amount of product. True if it does. False if it does not."
+          },
+          "barcode": {
+            "maxLength": 18,
+            "minLength": 18,
+            "type": "string",
+            "description": "SSCC barcode",
+            "example": "008012349999999997"
+          },
+          "articles": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            },
+            "description": "List of articles in this carton"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A carton with picked articles"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      }
+    }
+  }
+}
